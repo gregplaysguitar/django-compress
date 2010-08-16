@@ -19,6 +19,10 @@ def render_common(template_name, obj, filename, version):
         context['url'] = filename
     else:
         context['url'] = media_url(filename, prefix)
+    
+    if not settings.COMPRESS:
+        # append querystring version when not compressing files
+        context['url'] = '%s?%s' % (context['url'], get_version([filename]))
         
     return template.loader.render_to_string(template_name, context)
 
